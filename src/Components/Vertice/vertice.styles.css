@@ -1,0 +1,27 @@
+.circle {
+  height: 5rem;
+  width: 5rem;
+  background-color: white;
+  border-radius: 50%;
+  border: 2px dashed black;
+  color: #000;
+  position: absolute;
+  cursor: move;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.xd {
+  background-image: linear-gradient(25deg, #dc269f, #bd68b7, #8f8ed0, #21ade9);
+}
+
+.start {
+  border-color: #21ade9;
+}
+.end {
+  border-color: #dc269f;
+}
