@@ -10,18 +10,12 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useDispatch } from "react-redux";
+import * as actions from "../../Actions/index";
 
-export const Vertice = ({
-  id,
-  name,
-  h,
-  left,
-  top,
-  modifyVertice,
-  deleteVertice,
-  type,
-}) => {
+export const Vertice = ({ id, name, h, left, top, type, isSolution }) => {
   var leftBtn = left;
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [newName, setNewName] = React.useState("");
   const [newH, setNewH] = React.useState(0);
@@ -36,7 +30,7 @@ export const Vertice = ({
 
   const handleModify = () => {
     if (newName.trim() !== "" && !isNaN(newH)) {
-      modifyVertice(name, newName, newH);
+      dispatch(actions.modifyVertex(name, newName, newH));
       handleClose();
     } else {
       alert("Datos invalidos");
@@ -44,7 +38,7 @@ export const Vertice = ({
   };
 
   const handleDelete = () => {
-    //deleteVertice(name);
+    dispatch(actions.deleteVertex(name));
     handleClose();
   };
   const [{ isDragging }, drag] = useDrag(
@@ -90,15 +84,17 @@ export const Vertice = ({
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Modificar</Button>
-            <Button onClick={handleDelete}>Borrar</Button>
+            <Button onClick={handleModify}>Modificar</Button>
             <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleDelete} variant="text" color="error">
+              Borrar
+            </Button>
           </DialogActions>
         </Dialog>
       </div>
       <div
         ref={drag}
-        style={{ left, top }}
+        style={{ left, top, borderColor: isSolution ? "#1976D2" : "#000" }}
         className={
           type === "vertice"
             ? "circle"
