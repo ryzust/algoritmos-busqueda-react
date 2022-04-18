@@ -7,17 +7,21 @@ import {
   InputLabel,
   Select,
 } from "@mui/material";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../Actions/index";
 
-export const Sidebar = ({ addVertice, addEdge, vertices }) => {
+export const Sidebar = () => {
+  const vertices = useSelector((state) => Object.keys(state.adjList));
+  const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [h, setH] = useState(0);
   const [costo, setCosto] = useState(0);
-  const [e1, setE1] = useState(vertices[0]);
-  const [e2, setE2] = useState(vertices[1]);
+  const [e1, setE1] = useState(vertices[0] || "");
+  const [e2, setE2] = useState(vertices[1] || "");
   const handleClick = () => {
     if (/^([0-9]+\.?[0-9]*|\.[0-9]+)$/.test(h)) {
-      addVertice(name, h);
+      if (name !== "") dispatch(actions.addVertex(name.trim(), parseInt(h)));
     } else {
       alert("Heuristica invalida");
     }
@@ -25,7 +29,7 @@ export const Sidebar = ({ addVertice, addEdge, vertices }) => {
   const handleAddEdge = () => {
     if (/^([0-9]+\.?[0-9]*|\.[0-9]+)$/.test(costo)) {
       if (e1 !== e2) {
-        addEdge([e1, e2], costo);
+        dispatch(actions.addEdge(e1, e2, parseInt(costo)));
       } else {
         alert("No se puede conectar un nodo consigo mismo");
       }
