@@ -4,25 +4,38 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Select, FormControl, InputLabel, MenuItem, Fab } from "@mui/material";
 import { PlayArrow } from "@mui/icons-material";
+import { useSelector, useDispatch } from "react-redux";
+import * as actions from "../../Actions/index";
+import React from "react";
 
-export const ActionsBar = ({
-  algoritmos,
-  sAlg,
-  handleChange,
-  grafo,
-  handleChangeEnd,
-  handleChangeStart,
-}) => {
-  let start = grafo.start;
-  let end = grafo.end;
+export const ActionsBar = ({ algoritmos, sAlg, handleChange }) => {
+  const start = useSelector((state) => state.start);
+  const end = useSelector((state) => state.end);
+  const vertices = useSelector((state) => Object.keys(state.adjList));
+
+  const dispatch = useDispatch();
+
+  const handleGetSolution = () => {
+    switch (sAlg) {
+      case "Busqueda en profundidad":
+        dispatch(actions.getPath("DFS"));
+        break;
+      case "Busqueda en anchura":
+        dispatch(actions.getPath("BFS"));
+        break;
+
+      default:
+        break;
+    }
+  };
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="transparent">
-        <Toolbar>
+        <Toolbar sx={{ pt: 0.5, pb: 0.5 }}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Busqueda Informada
+            Algoritmos de busqueda
           </Typography>
-          <FormControl>
+          <FormControl sx={{ mr: 3 }}>
             <InputLabel id="s1">Algoritmo</InputLabel>
             <Select
               labelId="s1"
@@ -50,17 +63,17 @@ export const ActionsBar = ({
               autoWidth
               margin="dense"
               value={start}
-              onChange={handleChangeStart}
+              onChange={(e) => dispatch(actions.setStart(e.target.value))}
               style={{ minWidth: 200 }}
             >
-              {grafo.vertices.map((alg) => (
+              {vertices.map((alg) => (
                 <MenuItem key={alg} value={alg}>
                   {alg}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-          <FormControl sx={{ mx: 3 }}>
+          <FormControl sx={{ mr: 3 }}>
             <InputLabel id="s3">Fin</InputLabel>
             <Select
               labelId="s3"
@@ -69,17 +82,17 @@ export const ActionsBar = ({
               autoWidth
               margin="dense"
               value={end}
-              onChange={handleChangeEnd}
+              onChange={(e) => dispatch(actions.setEnd(e.target.value))}
               style={{ minWidth: 200 }}
             >
-              {grafo.vertices.map((alg) => (
+              {vertices.map((alg) => (
                 <MenuItem key={alg} value={alg}>
                   {alg}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-          <Fab sx={{ ml: 0 }} color="primary">
+          <Fab sx={{ ml: 0 }} color="primary" onClick={handleGetSolution}>
             <PlayArrow color="inherit"></PlayArrow>
           </Fab>
         </Toolbar>
