@@ -1,4 +1,4 @@
-export default function DFS(grafo) {
+export default function BFS(grafo) {
   if (grafo.start === grafo.end) return [grafo.start];
   var cola = [grafo.start];
   var antecesores = { [grafo.start]: -1 };
