@@ -1,83 +1,46 @@
-var grafo = {
-    vertices: ["wea", "wea2", "xd"],
-    h: [1, 2, 3],
-    edges: [
-      ["wea", "wea2"],
-      ["wea", "xd"],
-    ],
-    g: [5, 6],
-    start: "wea",
-    end: "xd",
-  };
+function BestFistSearch(grafo, heuristica) {
+    //Arreglos para nodos cerrados y abiertos
+    var abiertos = [];
+    var cerrados = [];
 
+    //Definimos nodos de comienzo y meta
+    var startNodo = grafo.start;
+    var goalNodo = grafo.end;
 
-export default function BestFirstSearch(grafo) {
-    let graph = grafo;
-    let openArr = [];
-    let closeArr = [];
-    let searchStatus = false;
+    //agregamos a los nodos abiertos el start
+    abiertos.append(startNodo);
 
-    const bestFS = (from, to) => {
-        printResult(openArr, closeArr);
-        pos = graph.start;
-        to = graph.end;
+    while (abiertos.lenght > 0) {
+        abiertos.sort();
+        
+        var actualNodo = abiertos.pop(0);
 
-        openArr.push(pos);
-        printResult(openArr, closeArr);
+        cerrados.append(actualNodo);
 
-        while (!searchStatus) {
-            if (openArr[0].name != to.name) {
-                if (openArr[0].direction.length != 0) {
-                    openArr[0].direction.forEach((item) => openArr.push(item));
-                    setVisited(closeArr, openArr);
-                    openArr.sort(compareNumeric);
-                    printResult(openArr, closeArr);
-                } else {
-                    setVisited(closeArr, openArr);
-                    printResult(openArr, closeArr);
-                }
-            } else {
-                setVisited(closeArr, openArr);
-                printResult(openArr, closeArr);
-                searchStatus = true;
+        if (actualNodo == goalNodo) {
+            var path = [];
+
+            while (actualNodo != startNodo) {
+                path.append(actualNodo)
+                actualNodo = { [actualNodo]: -1 }
             }
+
+            path.append(startNodo);
+
+            return path.reverse();
         }
-        printResult(openArr, closeArr);
-        reconstructPath(graph.start, graph.end, getResult(closeArr))
-    };
-}
 
-setVisited = (visited, unvisited) => {
-    visited.push(unvisited[0]);
-    unvisited.splice(0, 1);
-};
+        var vecinos = grafo.adjList[actualNodo];
 
-const compareNumeric = (a, b) => {
-    if (a.cost > b.cost) return 1;
-    if (a.cost == b.cost) return 0;
-    if (a.cost < b.cost) return -1;
-};
+        for (let i = 0; i < vecinos.length; i++) {
+            vecinoIndiv = vecinos[i][0];
 
-getResult = (arr) => {
-    let res = "";
-    arr.forEach((item) => {
-        res += item.name + " ";
-    });
-    return res;
-};
+            if(vecinoIndiv in cerrados)
+                continue;
+            
+            abiertos.append(vecinos)
+        }
 
-printResult = (openArr, closeArr) => {
-    console.log(`Unvisited : ${getResult(openArr)}`);
-    console.log(`Visited : ${getResult(closeArr)}`);
-    console.log("");
-};
-
-function reconstructPath(s, t, m) {
-    var u = t;
-    var path = [];
-    while (u !== -1) {
-      path.push(u);
-      u = m[u];
     }
-    return path.reverse();
-  }
+    return None;
+}
