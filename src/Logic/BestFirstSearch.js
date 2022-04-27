@@ -4,8 +4,8 @@ function BestFistSearch(grafo, heuristica) {
     var cerrados = [];
 
     //Definimos nodos de comienzo y meta
-    var startNodo = grafo.start;
-    var goalNodo = grafo.end;
+    var startNodo = new Nodo(grafo.start, None, 0, 0);
+    var goalNodo = new Nodo(grafo.end, None, 0, 0);
 
     //agregamos a los nodos abiertos el start
     abiertos.append(startNodo);
@@ -21,8 +21,8 @@ function BestFistSearch(grafo, heuristica) {
             var path = [];
 
             while (actualNodo != startNodo) {
-                path.append(actualNodo)
-                actualNodo = { [actualNodo]: -1 }
+                path.append(actualNodo);
+                actualNodo = actualNodo.padre;
             }
 
             path.append(startNodo);
@@ -33,14 +33,52 @@ function BestFistSearch(grafo, heuristica) {
         var vecinos = grafo.adjList[actualNodo];
 
         for (let i = 0; i < vecinos.length; i++) {
-            vecinoIndiv = vecinos[i][0];
+
+            vecinoIndiv = new Nodo(vecinos[0][i], actualNodo, 0, 0);
 
             if(vecinoIndiv in cerrados)
                 continue;
+
+            vecinoIndiv.distNodoInicial = nodoActual.distNodoInicial + grafo.getDistNodoInicial(nodoActual.nombre);
+            vecinoIndiv.distNodoObjetivo = grafo.getHeuristica(nodoActual.nombre);
+            vecinoIndiv.costoTotal = vecino.distNodoObjetivo;
+
             
-            abiertos.append(vecinos)
         }
 
     }
     return None;
+}
+
+function add_to_open(abiertos, vecinoIndiv) {
+    for (node in abiertos) {
+        if (vecinoIndiv == node && vecinoIndiv.costoTotal >= node.costoTotal)
+            return False
+    }
+    return True
+}
+
+class Nodo {
+    constructor (nombre, padre, distNodoInicial, distNodoObjetivo, costoTotal) {
+        this.nombre = nombre;
+        this.padre = padre;
+        this.distNodoInicial = distNodoInicial;
+        this.costoTotal = costoTotal;
+    } 
+
+    get nombre () {
+        return this.nombre;
+    }
+
+    get distNodoInicial () {
+        return this.distNodoInicial;
+    }
+
+    get padre () {
+        return this.padre
+    }
+
+    get distNodoObjetivo () {
+        return this.distNodoObjetivo;
+    }
 }
