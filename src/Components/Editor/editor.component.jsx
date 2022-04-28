@@ -59,7 +59,15 @@ export const Editor = () => {
         var p1 = [vProps[key].x + 40, vProps[key].y + 40];
         return value.map((edge) => {
           var p2 = [vProps[edge[0]].x + 40, vProps[edge[0]].y + 40];
-          return <Connection p1={p1} p2={p2} gx={edge[1]}></Connection>;
+          return (
+            <Connection
+              p1={p1}
+              p2={p2}
+              gx={edge[1]}
+              v1={key}
+              v2={edge[0]}
+            ></Connection>
+          );
         });
       })}
     </div>
