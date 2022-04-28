@@ -23,6 +23,18 @@ export const ActionsBar = ({ algoritmos, sAlg, handleChange }) => {
       case "Busqueda en anchura":
         dispatch(actions.getPath("BFS"));
         break;
+      case "Ascenso por la colina (MIN)":
+        dispatch(actions.getPath("HC_Min"));
+        break;
+      case "Ascenso por la colina (MAX)":
+        dispatch(actions.getPath("HC_Max"));
+        break;
+      case "Primero el mejor":
+        dispatch(actions.getPath("GBFS"));
+        break;
+      case "A*":
+        dispatch(actions.getPath("A*"));
+        break;
 
       default:
         break;
