@@ -1,15 +1,13 @@
-export default function aStar(grafo) {
+export default function GBFS(grafo) {
   //Nodos visitados
   var closedSet = [];
   //Nodos que podrian visitarse
   var openSet = [grafo.start];
   // De donde viene un nodo especifico
   var antecesores = { [grafo.start]: -1 };
-  // Costo de llegar a ese nodo desde el nodo inicio
-  var gScore = { [grafo.start]: 0 };
   // Costo total estimado para llegar al nodo objetivo desde un nodo especificado
   var fScore = {
-    [grafo.start]: gScore[grafo.start] + grafo.vProps[grafo.start].h,
+    [grafo.start]: grafo.vProps[grafo.start].h,
   };
   //Mientras haya nodos por explorar...
   while (openSet.length !== 0) {
@@ -26,15 +24,11 @@ export default function aStar(grafo) {
       // Nombre del iesimo vecino
       var v = neighbors[i][0];
       if (closedSet.indexOf(v) !== -1) continue;
-      // damos un posible costo sabiendo que gScore es el costo de llegar al nodo v desde el nodo inicio
-      // (el costo del camino hasta el nodo actual + distancia(actual,v))
-      var tentativeGScore = gScore[actual] + grafo.adjList[actual][i][1];
-      // si el nodo v aun no ha sido abierto o si tenemos una ruta de menor costo...
-      if (openSet.indexOf(v) === -1 || tentativeGScore < gScore[v]) {
+      // si el nodo v aun no ha sido abierto
+      if (openSet.indexOf(v) === -1) {
         antecesores[v] = actual;
-        gScore[v] = tentativeGScore;
-        // sabiendo que para a*: f(n) = g(n) + h(n)
-        fScore[v] = gScore[v] + grafo.vProps[v].h;
+        // sabiendo que para GBFS: f(n) = h(n)
+        fScore[v] = grafo.vProps[v].h;
         if (openSet.indexOf(v) === -1) {
           openSet.push(v);
         }
