@@ -1,6 +1,8 @@
 import DFS from "../../Logic/DFS";
 import BFS from "../../Logic/BFS";
-import "../../Logic/aStar";
+import aStar from "../../Logic/aStar";
+import GBFS from "../../Logic/GBFS";
+import { HC_min, HC_max } from "../../Logic/HillClimbing";
 
 const INITIAL_STATE = {
   adjList: {},
@@ -145,6 +147,10 @@ const graphReducer = (state = INITIAL_STATE, action) => {
       var { a } = action.payload;
       if (a === "BFS") return { ...state, solution: BFS(state) };
       if (a === "DFS") return { ...state, solution: DFS(state) };
+      if (a === "A*") return { ...state, solution: aStar(state) };
+      if (a === "GBFS") return { ...state, solution: GBFS(state) };
+      if (a === "HC_Min") return { ...state, solution: HC_min(state) };
+      if (a === "HC_Max") return { ...state, solution: HC_max(state) };
       return state;
 
     default:
