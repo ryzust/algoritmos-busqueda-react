@@ -1,0 +1,4 @@
+.connection:hover{
+    color:red;
+    cursor: grab;
+}
