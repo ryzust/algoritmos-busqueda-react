@@ -13,7 +13,8 @@ class App extends Component {
       algoritmos: [
         "A*",
         "Primero el mejor",
-        "Ascenso a la colina",
+        "Ascenso por la colina (MAX)",
+        "Ascenso por la colina (MIN)",
         "Busqueda en profundidad",
         "Busqueda en anchura",
       ],
