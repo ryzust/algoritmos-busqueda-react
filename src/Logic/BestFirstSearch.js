@@ -22,7 +22,7 @@ function BestFistSearch(grafo, heuristica) {
 
             while (actualNodo != startNodo) {
                 path.append(actualNodo);
-                actualNodo = actualNodo.padre;
+                actualNodo = { [actualNodo]: -1 };
             }
 
             path.append(startNodo);
@@ -36,14 +36,16 @@ function BestFistSearch(grafo, heuristica) {
 
             vecinoIndiv = new Nodo(vecinos[0][i], actualNodo, 0, 0);
 
-            if(vecinoIndiv in cerrados)
+            if(cerrados.includes(vecinoIndiv))
                 continue;
 
             vecinoIndiv.distNodoInicial = nodoActual.distNodoInicial + grafo.getDistNodoInicial(nodoActual.nombre);
             vecinoIndiv.distNodoObjetivo = grafo.getHeuristica(nodoActual.nombre);
-            vecinoIndiv.costoTotal = vecino.distNodoObjetivo;
+            vecinoIndiv.costoTotal = vecino.distNodoObjetivo; 
 
-            
+            /*if(add_to_open(abiertos, neighbor) == True):
+                # Everything is green, add neighbor to open list
+                open.append(neighbor)*/
         }
 
     }
